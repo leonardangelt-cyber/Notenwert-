@@ -61,7 +61,7 @@ jobs:
         working-directory: ${{ steps.src.outputs.dir }}
         run: |
           set -o pipefail
-          gradle assembleDebug --console=plain 2>&1 | tee "${{ github.workspace }}/build.log"
+          gradle assembleRelease --console=plain 2>&1 | tee "${{ github.workspace }}/build.log"
 
       - name: Fehler anzeigen
         if: failure()
@@ -70,7 +70,7 @@ jobs:
 
       - name: APK einsammeln
         run: |
-          APK=$(find "${{ steps.src.outputs.dir }}" -path '*outputs/apk/debug/*.apk' | head -n 1)
+          APK=$(find "${{ steps.src.outputs.dir }}" -path '*outputs/apk/release/*.apk' | head -n 1)
           if [ -z "$APK" ]; then echo "::error::Keine APK gefunden"; exit 1; fi
           mkdir -p out && cp "$APK" out/Notenwerk.apk
           ls -la out
